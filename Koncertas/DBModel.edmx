@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="KoncertasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Atlikejas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vardas" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" />
+          <Property Name="SceninisVardas" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Autorius">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vardas" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" />
+          <Property Name="AsmensKodas" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Daina">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AutoriusID" Type="int" />
+          <Property Name="Pavadinimas" Type="nvarchar" MaxLength="50" />
+          <Property Name="Metai" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DainosAtlikejas">
+          <Key>
+            <PropertyRef Name="DainosID" />
+            <PropertyRef Name="AtlikejoID" />
+          </Key>
+          <Property Name="DainosID" Type="int" Nullable="false" />
+          <Property Name="AtlikejoID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Daina_Autorius">
+          <End Role="Autorius" Type="Self.Autorius" Multiplicity="0..1" />
+          <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autorius">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Daina">
+              <PropertyRef Name="AutoriusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DainosAtlikejas_Atlikejas">
+          <End Role="Atlikejas" Type="Self.Atlikejas" Multiplicity="1" />
+          <End Role="DainosAtlikejas" Type="Self.DainosAtlikejas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atlikejas">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DainosAtlikejas">
+              <PropertyRef Name="AtlikejoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DainosAtlikejas_Daina">
+          <End Role="Daina" Type="Self.Daina" Multiplicity="1" />
+          <End Role="DainosAtlikejas" Type="Self.DainosAtlikejas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Daina">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DainosAtlikejas">
+              <PropertyRef Name="DainosID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KoncertasModelStoreContainer">
+          <EntitySet Name="Atlikejas" EntityType="Self.Atlikejas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Autorius" EntityType="Self.Autorius" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Daina" EntityType="Self.Daina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DainosAtlikejas" EntityType="Self.DainosAtlikejas" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DainosAtlikejas].[DainosID] AS [DainosID], 
+    [DainosAtlikejas].[AtlikejoID] AS [AtlikejoID]
+    FROM [dbo].[DainosAtlikejas] AS [DainosAtlikejas]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Daina_Autorius" Association="Self.FK_Daina_Autorius">
+            <End Role="Autorius" EntitySet="Autorius" />
+            <End Role="Daina" EntitySet="Daina" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DainosAtlikejas_Atlikejas" Association="Self.FK_DainosAtlikejas_Atlikejas">
+            <End Role="Atlikejas" EntitySet="Atlikejas" />
+            <End Role="DainosAtlikejas" EntitySet="DainosAtlikejas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DainosAtlikejas_Daina" Association="Self.FK_DainosAtlikejas_Daina">
+            <End Role="Daina" EntitySet="Daina" />
+            <End Role="DainosAtlikejas" EntitySet="DainosAtlikejas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KoncertasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Atlikejas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SceninisVardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Daina" Relationship="Self.DainosAtlikejas" FromRole="Atlikejas" ToRole="Daina" />
+        </EntityType>
+        <EntityType Name="Autorius">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AsmensKodas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Daina" Relationship="Self.FK_Daina_Autorius" FromRole="Autorius" ToRole="Daina" />
+        </EntityType>
+        <EntityType Name="Daina">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AutoriusID" Type="Int32" />
+          <Property Name="Pavadinimas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Metai" Type="Int32" />
+          <NavigationProperty Name="Autorius" Relationship="Self.FK_Daina_Autorius" FromRole="Daina" ToRole="Autorius" />
+          <NavigationProperty Name="Atlikejas" Relationship="Self.DainosAtlikejas" FromRole="Daina" ToRole="Atlikejas" />
+        </EntityType>
+        <Association Name="FK_Daina_Autorius">
+          <End Role="Autorius" Type="Self.Autorius" Multiplicity="0..1" />
+          <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autorius">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Daina">
+              <PropertyRef Name="AutoriusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DainosAtlikejas">
+          <End Role="Atlikejas" Type="Self.Atlikejas" Multiplicity="*" />
+          <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="KoncertasEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Atlikejas" EntityType="Self.Atlikejas" />
+          <EntitySet Name="Autorius" EntityType="Self.Autorius" />
+          <EntitySet Name="Daina" EntityType="Self.Daina" />
+          <AssociationSet Name="FK_Daina_Autorius" Association="Self.FK_Daina_Autorius">
+            <End Role="Autorius" EntitySet="Autorius" />
+            <End Role="Daina" EntitySet="Daina" />
+          </AssociationSet>
+          <AssociationSet Name="DainosAtlikejas" Association="Self.DainosAtlikejas">
+            <End Role="Atlikejas" EntitySet="Atlikejas" />
+            <End Role="Daina" EntitySet="Daina" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KoncertasModelStoreContainer" CdmEntityContainer="KoncertasEntities1">
+          <EntitySetMapping Name="Atlikejas">
+            <EntityTypeMapping TypeName="KoncertasModel.Atlikejas">
+              <MappingFragment StoreEntitySet="Atlikejas">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Vardas" ColumnName="Vardas" />
+                <ScalarProperty Name="Pavarde" ColumnName="Pavarde" />
+                <ScalarProperty Name="SceninisVardas" ColumnName="SceninisVardas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Autorius">
+            <EntityTypeMapping TypeName="KoncertasModel.Autorius">
+              <MappingFragment StoreEntitySet="Autorius">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Vardas" ColumnName="Vardas" />
+                <ScalarProperty Name="Pavarde" ColumnName="Pavarde" />
+                <ScalarProperty Name="AsmensKodas" ColumnName="AsmensKodas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Daina">
+            <EntityTypeMapping TypeName="KoncertasModel.Daina">
+              <MappingFragment StoreEntitySet="Daina">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AutoriusID" ColumnName="AutoriusID" />
+                <ScalarProperty Name="Pavadinimas" ColumnName="Pavadinimas" />
+                <ScalarProperty Name="Metai" ColumnName="Metai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="DainosAtlikejas" TypeName="KoncertasModel.DainosAtlikejas" StoreEntitySet="DainosAtlikejas">
+            <EndProperty Name="Atlikejas">
+              <ScalarProperty Name="ID" ColumnName="AtlikejoID" />
+            </EndProperty>
+            <EndProperty Name="Daina">
+              <ScalarProperty Name="ID" ColumnName="DainosID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
