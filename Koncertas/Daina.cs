@@ -20,12 +20,11 @@ namespace Koncertas
             this.Atlikejas = new HashSet<Atlikejas>();
         }
     
-        public int ID { get; set; }
-        public Nullable<int> AutoriusID { get; set; }
         public string Pavadinimas { get; set; }
-        public Nullable<int> Metai { get; set; }
+        public string Autorius { get; set; }
+        public int Metai { get; set; }
     
-        public virtual Autorius Autorius { get; set; }
+        public virtual Autorius Autorius1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Atlikejas> Atlikejas { get; set; }
     }

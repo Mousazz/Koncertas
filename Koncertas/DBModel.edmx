@@ -7,50 +7,47 @@
       <Schema Namespace="KoncertasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Atlikejas">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="SceninisVardas" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Vardas" Type="nvarchar" MaxLength="50" />
-          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" />
-          <Property Name="SceninisVardas" Type="nvarchar" MaxLength="50" />
+          <Property Name="SceninisVardas" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vardas" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Autorius">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="AsmensKodas" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Vardas" Type="nvarchar" MaxLength="50" />
-          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" />
-          <Property Name="AsmensKodas" Type="nvarchar" MaxLength="50" />
+          <Property Name="AsmensKodas" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vardas" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pavarde" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Daina">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Pavadinimas" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AutoriusID" Type="int" />
-          <Property Name="Pavadinimas" Type="nvarchar" MaxLength="50" />
-          <Property Name="Metai" Type="int" />
+          <Property Name="Pavadinimas" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Autorius" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Metai" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DainosAtlikejas">
           <Key>
-            <PropertyRef Name="DainosID" />
-            <PropertyRef Name="AtlikejoID" />
+            <PropertyRef Name="Daina" />
+            <PropertyRef Name="Atlikejas" />
           </Key>
-          <Property Name="DainosID" Type="int" Nullable="false" />
-          <Property Name="AtlikejoID" Type="int" Nullable="false" />
+          <Property Name="Daina" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Atlikejas" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_Daina_Autorius">
-          <End Role="Autorius" Type="Self.Autorius" Multiplicity="0..1" />
+          <End Role="Autorius" Type="Self.Autorius" Multiplicity="1" />
           <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Autorius">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="AsmensKodas" />
             </Principal>
             <Dependent Role="Daina">
-              <PropertyRef Name="AutoriusID" />
+              <PropertyRef Name="Autorius" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -59,10 +56,10 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
           <End Role="DainosAtlikejas" Type="Self.DainosAtlikejas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Atlikejas">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="SceninisVardas" />
             </Principal>
             <Dependent Role="DainosAtlikejas">
-              <PropertyRef Name="AtlikejoID" />
+              <PropertyRef Name="Atlikejas" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -71,10 +68,10 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
           <End Role="DainosAtlikejas" Type="Self.DainosAtlikejas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Daina">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="Pavadinimas" />
             </Principal>
             <Dependent Role="DainosAtlikejas">
-              <PropertyRef Name="DainosID" />
+              <PropertyRef Name="Daina" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -84,8 +81,8 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
           <EntitySet Name="Daina" EntityType="Self.Daina" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DainosAtlikejas" EntityType="Self.DainosAtlikejas" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [DainosAtlikejas].[DainosID] AS [DainosID], 
-    [DainosAtlikejas].[AtlikejoID] AS [AtlikejoID]
+    [DainosAtlikejas].[Daina] AS [Daina], 
+    [DainosAtlikejas].[Atlikejas] AS [Atlikejas]
     FROM [dbo].[DainosAtlikejas] AS [DainosAtlikejas]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Daina_Autorius" Association="Self.FK_Daina_Autorius">
@@ -108,44 +105,41 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
       <Schema Namespace="KoncertasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Atlikejas">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="SceninisVardas" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SceninisVardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SceninisVardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Daina" Relationship="Self.DainosAtlikejas" FromRole="Atlikejas" ToRole="Daina" />
         </EntityType>
         <EntityType Name="Autorius">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="AsmensKodas" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AsmensKodas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AsmensKodas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Vardas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pavarde" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Daina" Relationship="Self.FK_Daina_Autorius" FromRole="Autorius" ToRole="Daina" />
         </EntityType>
         <EntityType Name="Daina">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Pavadinimas" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AutoriusID" Type="Int32" />
-          <Property Name="Pavadinimas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Metai" Type="Int32" />
-          <NavigationProperty Name="Autorius" Relationship="Self.FK_Daina_Autorius" FromRole="Daina" ToRole="Autorius" />
+          <Property Name="Pavadinimas" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Autorius" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Metai" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Autorius1" Relationship="Self.FK_Daina_Autorius" FromRole="Daina" ToRole="Autorius" />
           <NavigationProperty Name="Atlikejas" Relationship="Self.DainosAtlikejas" FromRole="Daina" ToRole="Atlikejas" />
         </EntityType>
         <Association Name="FK_Daina_Autorius">
-          <End Role="Autorius" Type="Self.Autorius" Multiplicity="0..1" />
+          <End Role="Autorius" Type="Self.Autorius" Multiplicity="1" />
           <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Autorius">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="AsmensKodas" />
             </Principal>
             <Dependent Role="Daina">
-              <PropertyRef Name="AutoriusID" />
+              <PropertyRef Name="Autorius" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -153,7 +147,7 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
           <End Role="Atlikejas" Type="Self.Atlikejas" Multiplicity="*" />
           <End Role="Daina" Type="Self.Daina" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="KoncertasEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="KoncertasEntities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Atlikejas" EntityType="Self.Atlikejas" />
           <EntitySet Name="Autorius" EntityType="Self.Autorius" />
           <EntitySet Name="Daina" EntityType="Self.Daina" />
@@ -171,43 +165,40 @@ warning 6002: The table/view 'Koncertas.dbo.DainosAtlikejas' does not have a pri
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="KoncertasModelStoreContainer" CdmEntityContainer="KoncertasEntities1">
+        <EntityContainerMapping StorageEntityContainer="KoncertasModelStoreContainer" CdmEntityContainer="KoncertasEntities3">
           <EntitySetMapping Name="Atlikejas">
             <EntityTypeMapping TypeName="KoncertasModel.Atlikejas">
               <MappingFragment StoreEntitySet="Atlikejas">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SceninisVardas" ColumnName="SceninisVardas" />
                 <ScalarProperty Name="Vardas" ColumnName="Vardas" />
                 <ScalarProperty Name="Pavarde" ColumnName="Pavarde" />
-                <ScalarProperty Name="SceninisVardas" ColumnName="SceninisVardas" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Autorius">
             <EntityTypeMapping TypeName="KoncertasModel.Autorius">
               <MappingFragment StoreEntitySet="Autorius">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AsmensKodas" ColumnName="AsmensKodas" />
                 <ScalarProperty Name="Vardas" ColumnName="Vardas" />
                 <ScalarProperty Name="Pavarde" ColumnName="Pavarde" />
-                <ScalarProperty Name="AsmensKodas" ColumnName="AsmensKodas" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Daina">
             <EntityTypeMapping TypeName="KoncertasModel.Daina">
               <MappingFragment StoreEntitySet="Daina">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="AutoriusID" ColumnName="AutoriusID" />
                 <ScalarProperty Name="Pavadinimas" ColumnName="Pavadinimas" />
+                <ScalarProperty Name="Autorius" ColumnName="Autorius" />
                 <ScalarProperty Name="Metai" ColumnName="Metai" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="DainosAtlikejas" TypeName="KoncertasModel.DainosAtlikejas" StoreEntitySet="DainosAtlikejas">
             <EndProperty Name="Atlikejas">
-              <ScalarProperty Name="ID" ColumnName="AtlikejoID" />
+              <ScalarProperty Name="SceninisVardas" ColumnName="Atlikejas" />
             </EndProperty>
             <EndProperty Name="Daina">
-              <ScalarProperty Name="ID" ColumnName="DainosID" />
+              <ScalarProperty Name="Pavadinimas" ColumnName="Daina" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

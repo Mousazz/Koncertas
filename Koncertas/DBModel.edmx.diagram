@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bdfddebbd70d4ef19283f30a3c753bbf" Name="Diagram1">
+      <Diagram DiagramId="2820333ac4464c39a4b7ffcd02ef9db1" Name="Diagram1">
         <EntityTypeShape EntityType="KoncertasModel.Atlikejas" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="KoncertasModel.Autorius" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KoncertasModel.Autorius" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="KoncertasModel.Daina" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="KoncertasModel.FK_Daina_Autorius" ManuallyRouted="false" />
         <AssociationConnector Association="KoncertasModel.DainosAtlikejas" ManuallyRouted="false" />

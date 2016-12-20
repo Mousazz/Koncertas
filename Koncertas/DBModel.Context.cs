@@ -13,10 +13,10 @@ namespace Koncertas
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class KoncertasEntities1 : DbContext
+    public partial class KoncertasEntities3 : DbContext
     {
-        public KoncertasEntities1()
-            : base("name=KoncertasEntities1")
+        public KoncertasEntities3()
+            : base("name=KoncertasEntities3")
         {
         }
     

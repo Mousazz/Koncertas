@@ -20,10 +20,9 @@ namespace Koncertas
             this.Daina = new HashSet<Daina>();
         }
     
-        public int ID { get; set; }
+        public string AsmensKodas { get; set; }
         public string Vardas { get; set; }
         public string Pavarde { get; set; }
-        public string AsmensKodas { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Daina> Daina { get; set; }
